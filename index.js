@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 const cron = require('node-cron');
 
-cron.schedule('30 0 * * *', () => {
+cron.schedule('0 1 * * *', () => {
 	// directory path
 	const directory = 'public/image/erase';
 
