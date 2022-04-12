@@ -11,7 +11,25 @@ app.use(express.json())
 app.use(respond);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+const cron = require('node-cron');
 
+cron.schedule('30 0 * * *', () => {
+	// directory path
+	const directory = 'public/image/erase';
+
+	fs.readdir(directory, (err, files) => {
+	  if (err) throw err;
+	
+	  for (const file of files) {
+		fs.unlink(path.join(directory, file), err => {
+		  if (err) throw err;
+		});
+	  }
+	});
+  }, {
+	scheduled: true,
+	timezone: "Asia/Jakarta"
+});
 
 app.get('/', (req,res)=>{
 	res.status(200).json("OK")
@@ -89,4 +107,4 @@ app.post('/api/image',
 	}
 })
 
-app.listen(3000)
+app.listen(8080)
